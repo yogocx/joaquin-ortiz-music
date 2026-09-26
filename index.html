@@ -6,6 +6,7 @@
 <meta name="description" content="Joaquin Ortiz is an Oakland-born, NYC-based jazz drummer and percussionist. Book him for live shows, sessions, and sideman work.">
 <meta property="og:title" content="Joaquin Ortiz Music">
 <meta property="og:description" content="Jazz drummer and percussionist. Oakland, CA to New York City.">
+<meta property="og:image" content="https://joaquin-ortiz-music.netlify.app/img/hero.jpg">
 <title>Joaquin Ortiz Music</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Syne:wght@500;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -71,12 +72,16 @@ body::before{
   position:relative;padding:calc(110px + env(safe-area-inset-top,0px)) var(--gutter) 56px;
   min-height:min(92svh,900px);display:grid;align-content:end;overflow:hidden;
 }
-#pulse{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero .bg{position:absolute;inset:0;z-index:0;background:url("img/hero.jpg") 60% 30%/cover no-repeat;filter:saturate(.85) contrast(1.05)}
+.hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(10,9,13,.85) 0%,rgba(10,9,13,.45) 55%,rgba(10,9,13,.25) 100%)}
+#pulse{position:absolute;inset:0;width:100%;height:100%;z-index:1;mix-blend-mode:screen}
 .hero::after{
-  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   background:radial-gradient(ellipse at 70% 40%,rgba(110,91,255,.18),transparent 55%),linear-gradient(to top,var(--ground) 0%,rgba(10,9,13,.2) 40%,transparent 70%);
 }
-.hero>*{position:relative;z-index:2}
+.hero>*{position:relative;z-index:3}
+.hero .bg,.hero #pulse{z-index:auto}
+.hero .bg{z-index:0}.hero #pulse{z-index:1}
 .eyebrow{
   display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
   font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;
@@ -186,6 +191,16 @@ section{padding:clamp(72px,10vw,140px) var(--gutter)}
 @keyframes eq{from{height:20%}to{height:100%}}
 @media (max-width:860px){.sounds-grid{grid-template-columns:1fr}}
 
+/* clips */
+.clips{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.clip{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.clip video{display:block;width:100%;aspect-ratio:3/4;max-width:100%;object-fit:cover;background:#000}
+.clip figcaption{padding:16px 18px;display:grid;gap:3px}
+.clip figcaption b{font-family:var(--head);font-weight:700;font-size:16px}
+.clip figcaption span{font-family:var(--body);font-size:13px;color:var(--muted)}
+@media (max-width:860px){.clips{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.clips{grid-template-columns:1fr}}
+
 /* shows */
 .shows{background:var(--surface)}
 .show-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
@@ -218,6 +233,8 @@ section{padding:clamp(72px,10vw,140px) var(--gutter)}
 .tile:nth-child(1){background:radial-gradient(circle at 20% 80%,rgba(224,160,64,.4),transparent 50%),linear-gradient(160deg,#1d1a23,#0a090d)}
 .tile:nth-child(3){background:radial-gradient(circle at 80% 20%,rgba(110,91,255,.4),transparent 50%),linear-gradient(160deg,#1d1a23,#0a090d)}
 .tile:nth-child(5){background:radial-gradient(circle at 50% 100%,rgba(224,160,64,.3),transparent 55%),linear-gradient(160deg,#15131a,#0a090d)}
+.tile img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease,filter .4s}
+.tile:hover img{transform:scale(1.04)}
 .tile .ph{font-size:11px}
 @media (max-width:760px){.gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:minmax(140px,40vw)}}
 
@@ -288,6 +305,7 @@ footer .socials a:hover{color:var(--brass)}
 </nav>
 
 <header class="hero" id="top">
+  <div class="bg" aria-hidden="true"></div>
   <canvas id="pulse" aria-hidden="true"></canvas>
   <div class="eyebrow">
     <span class="dot"></span>
@@ -334,7 +352,7 @@ footer .socials a:hover{color:var(--brass)}
     </div>
     <figure class="portrait" aria-label="Portrait placeholder">
       <span class="corner tl">Portrait</span>
-      <div class="ph">Photo of Joaquin<small>drop in a 4:5 portrait here</small></div>
+      <img src="img/9.jpg" alt="Joaquin Ortiz behind a green drum kit in the studio" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%">
       <span class="corner br">Oakland → NYC</span>
     </figure>
   </div>
@@ -345,33 +363,19 @@ footer .socials a:hover{color:var(--brass)}
     <span class="tag">02 / Sounds</span>
     <h2>Watch &amp; Listen</h2>
   </div>
-  <div class="sounds-grid">
-    <div class="video" aria-label="Featured video placeholder">
-      <div class="play" aria-hidden="true"></div>
-      <div class="ph">Featured performance video<small>16:9 clip goes here</small></div>
-    </div>
-    <div class="tracks" id="tracks">
-      <div class="track" tabindex="0" role="button" aria-pressed="false">
-        <span class="n">01</span>
-        <span class="t">Live at The New School<small>Trio · drum set</small></span>
-        <span class="bars"><i></i><i></i><i></i><i></i></span>
-      </div>
-      <div class="track" tabindex="0" role="button" aria-pressed="false">
-        <span class="n">02</span>
-        <span class="t">Oakland Session<small>Afro-Cuban · congas</small></span>
-        <span class="bars"><i></i><i></i><i></i><i></i></span>
-      </div>
-      <div class="track" tabindex="0" role="button" aria-pressed="false">
-        <span class="n">03</span>
-        <span class="t">Solo Study<small>Brushes · ballad</small></span>
-        <span class="bars"><i></i><i></i><i></i><i></i></span>
-      </div>
-      <div class="track" tabindex="0" role="button" aria-pressed="false">
-        <span class="n">04</span>
-        <span class="t">Late Set, Brooklyn<small>Quartet · up-tempo</small></span>
-        <span class="bars"><i></i><i></i><i></i><i></i></span>
-      </div>
-    </div>
+  <div class="clips">
+    <figure class="clip">
+      <video controls preload="none" playsinline poster="video/tipples.jpg" src="video/tipples.mp4"></video>
+      <figcaption><b>Trio at Mr. Tipple's</b><span>San Francisco · drum set · straight-ahead</span></figcaption>
+    </figure>
+    <figure class="clip">
+      <video controls preload="none" playsinline poster="video/concert.jpg" src="video/concert.mp4"></video>
+      <figcaption><b>Vocal set, live</b><span>Timbales &amp; bongos behind the singer</span></figcaption>
+    </figure>
+    <figure class="clip">
+      <video controls preload="none" playsinline muted loop poster="video/congas.jpg" src="video/congas.mp4"></video>
+      <figcaption><b>Congas, after hours</b><span>Bar session · hand percussion</span></figcaption>
+    </figure>
   </div>
 </section>
 
@@ -406,13 +410,13 @@ footer .socials a:hover{color:var(--brass)}
     <h2>On Stage</h2>
   </div>
   <div class="gallery-grid">
-    <div class="tile big"><div class="ph">Hero live shot<small>landscape or square</small></div></div>
-    <div class="tile"><div class="ph">Behind the kit</div></div>
-    <div class="tile"><div class="ph">Detail · cymbals</div></div>
-    <div class="tile wide"><div class="ph">Band shot</div></div>
-    <div class="tile"><div class="ph">Congas</div></div>
-    <div class="tile"><div class="ph">Portrait</div></div>
-    <div class="tile wide"><div class="ph">Oakland summer</div></div>
+    <div class="tile big"><img src="img/8.jpg" alt="Joaquin behind the kit in the studio, sticks raised" loading="lazy"></div>
+    <div class="tile"><img src="img/10.jpg" alt="Joaquin laughing mid-take" loading="lazy"></div>
+    <div class="tile"><img src="img/7.jpg" alt="Conga section on stage" loading="lazy"></div>
+    <div class="tile wide"><img src="img/11.jpg" alt="Full band on a concert hall stage" loading="lazy"></div>
+    <div class="tile"><img src="img/3.jpg" alt="Timbales close-up" loading="lazy"></div>
+    <div class="tile"><img src="img/5.jpg" alt="Percussion section on stage" loading="lazy"></div>
+    <div class="tile wide"><img src="img/2.jpg" alt="Band taking a bow" loading="lazy"></div>
   </div>
 </section>
 
