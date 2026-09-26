@@ -95,6 +95,10 @@ body::before{
 }
 .hero h1 .l2{display:block;color:transparent;-webkit-text-stroke:2px var(--cream);}
 .hero h1 .l2 em{font-style:normal;color:var(--brass);-webkit-text-stroke:0}
+.hero h1 .stick{display:inline-block;width:.17em;height:.92em;vertical-align:baseline;position:relative;top:0;margin:0 .01em;transform-origin:50% 100%;transform:rotate(6deg);filter:drop-shadow(0 0 .08em rgba(224,160,64,.7));animation:tap 1.74s cubic-bezier(.3,0,.2,1) infinite}
+.hero h1 .stick svg{display:block;width:100%;height:100%}
+@keyframes tap{0%,78%,100%{transform:rotate(6deg)}84%{transform:rotate(-7deg) translateY(.03em)}90%{transform:rotate(8deg)}}
+
 .hero .sub{
   display:grid;grid-template-columns:1.2fr 1fr;gap:28px;margin-top:34px;align-items:end;
 }
@@ -314,7 +318,7 @@ footer .socials a:hover{color:var(--brass)}
   </div>
   <h1>
     <span class="l1">Joaquin</span>
-    <span class="l2">Ort<em>i</em>z</span>
+    <span class="l2">Ort<span class="stick" role="img" aria-label="i"><svg viewBox="0 0 60 400" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="stickg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f3c469"/><stop offset=".45" stop-color="#e0a040"/><stop offset="1" stop-color="#8f5b1c"/></linearGradient></defs><ellipse cx="30" cy="16" rx="13" ry="15" fill="url(#stickg)"/><path d="M21 30 C23 24 37 24 39 30 L47 300 L48 396 L12 396 L13 300 Z" fill="url(#stickg)"/><path d="M24 50 L18 390" stroke="#fff" stroke-opacity=".28" stroke-width="3"/></svg></span>z</span>
   </h1>
   <div class="sub">
     <p>Mexican American drummer and percussionist. Bay Area swing, New York grit, and a pocket you can feel in your chest.</p>
