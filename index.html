@@ -86,14 +86,12 @@ body::before{
 }
 .hero .bg{position:absolute;inset:0;z-index:0;background:url("img/hero.jpg") 62% 20%/cover no-repeat;filter:saturate(.85) contrast(1.05)}
 .hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(10,9,13,.85) 0%,rgba(10,9,13,.45) 55%,rgba(10,9,13,.25) 100%)}
-#pulse{position:absolute;inset:0;width:100%;height:100%;z-index:1;mix-blend-mode:screen}
 .hero::after{
   content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   background:radial-gradient(ellipse at 70% 40%,rgba(110,91,255,.18),transparent 55%),linear-gradient(to top,var(--ground) 0%,rgba(10,9,13,.2) 40%,transparent 70%);
 }
 .hero>*{position:relative;z-index:3}
-.hero .bg,.hero #pulse{z-index:auto}
-.hero .bg{z-index:0}.hero #pulse{z-index:1}
+.hero .bg{z-index:0}
 .eyebrow{
   display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
   font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;
@@ -322,7 +320,6 @@ footer .socials a:hover{color:var(--brass)}
 
 <header class="hero" id="top">
   <div class="bg" aria-hidden="true"></div>
-  <canvas id="pulse" aria-hidden="true"></canvas>
   <div class="eyebrow">
     <span class="dot"></span>
     <span>Drums · Percussion · Jazz</span>
@@ -492,42 +489,6 @@ footer .socials a:hover{color:var(--brass)}
 
 <script>
 (function(){
-  // Rhythmic pulse: rings fire on a swung ride pattern at 138 bpm
-  var c=document.getElementById('pulse'),ctx=c.getContext('2d');
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var rings=[],W,H,dpr;
-  function size(){dpr=Math.min(devicePixelRatio||1,2);W=c.clientWidth;H=c.clientHeight;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
-  size();addEventListener('resize',size);
-  var bpm=138,beat=60000/bpm;
-  // swing ride: quarter, then late eighth (triplet feel)
-  var pattern=[0,beat*2/3,beat,beat+beat*2/3,beat*2,beat*2+beat*2/3,beat*3,beat*3+beat*2/3];
-  var accents=[1,.45,.7,.45,1,.45,.7,.45];
-  var start=performance.now(),fired={};
-  function fire(a,i){
-    var cx=W*0.68,cy=H*0.42;
-    rings.push({x:cx+(Math.random()-.5)*W*.06,y:cy+(Math.random()-.5)*H*.08,r:10,a:a,t:0,violet:i%4===2});
-  }
-  function frame(now){
-    var t=(now-start)%(beat*4),bar=Math.floor((now-start)/(beat*4));
-    for(var i=0;i<pattern.length;i++){var k=bar+'-'+i;if(t>=pattern[i]&&!fired[k]){fired[k]=1;fire(accents[i],i);}}
-    if(t<beat/2){fired={};for(var j=0;j<pattern.length;j++)if(pattern[j]<t)fired[bar+'-'+j]=1;}
-    ctx.clearRect(0,0,W,H);
-    for(var r=rings.length-1;r>=0;r--){
-      var g=rings[r];g.t+=1/60;g.r+=(2.2+g.a*4);
-      var alpha=Math.max(0,(1-g.t/2.2))*g.a*.9;
-      if(alpha<=0){rings.splice(r,1);continue;}
-      ctx.beginPath();ctx.arc(g.x,g.y,g.r,0,Math.PI*2);
-      ctx.strokeStyle=(g.violet?'rgba(110,91,255,':'rgba(224,160,64,')+alpha+')';
-      ctx.lineWidth=1+g.a*1.5;ctx.stroke();
-    }
-    requestAnimationFrame(frame);
-  }
-  if(reduce){
-    // static composition
-    for(var i=0;i<7;i++){rings.push({x:W*.68,y:H*.42,r:40+i*70,a:.6-i*.07,t:0,violet:i%3===1});}
-    ctx.clearRect(0,0,W,H);rings.forEach(function(g){ctx.beginPath();ctx.arc(g.x,g.y,g.r,0,Math.PI*2);ctx.strokeStyle=(g.violet?'rgba(110,91,255,':'rgba(224,160,64,')+g.a+')';ctx.lineWidth=1.5;ctx.stroke();});
-  } else requestAnimationFrame(frame);
-
   // track toggles (visual only until audio is supplied)
   var tracks=document.querySelectorAll('.track');
   function toggle(el){var on=el.classList.contains('on');tracks.forEach(function(t){t.classList.remove('on');t.setAttribute('aria-pressed','false');});if(!on){el.classList.add('on');el.setAttribute('aria-pressed','true');}}
