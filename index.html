@@ -455,7 +455,9 @@ footer .socials a:hover{color:var(--brass)}
         <button class="copy" type="button" data-copy="ig">Copy</button>
       </div>
     </div>
-    <form id="bookform" novalidate>
+    <form id="bookform" name="booking" method="POST" action="/" data-netlify="true" netlify-honeypot="company" novalidate>
+      <input type="hidden" name="form-name" value="booking">
+      <p hidden><label>Company<input name="company" tabindex="-1" autocomplete="off"></label></p>
       <div class="row">
         <label>Your name<input id="f-name" name="name" type="text" placeholder="Full name" required></label>
         <label>Email<input id="f-email" name="email" type="email" placeholder="you@venue.com" required></label>
@@ -504,13 +506,22 @@ footer .socials a:hover{color:var(--brass)}
     });
   });
 
-  // form (no backend yet): validate and confirm in-page
+  // booking form: submits to Netlify Forms, which emails the inquiry
   var f=document.getElementById('bookform'),sent=document.getElementById('sent');
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var name=document.getElementById('f-name'),email=document.getElementById('f-email');
     if(!name.value.trim()||!/.+@.+\..+/.test(email.value)){sent.hidden=false;sent.textContent='Add your name and a valid email so Joaquin can reply.';return;}
-    sent.hidden=false;sent.textContent='Thanks, '+name.value.trim().split(' ')[0]+'. Your inquiry is ready. Until the form is wired to an inbox, email info@joaquinortizmusic.com directly.';
+    var btn=f.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Sending';
+    var data=new URLSearchParams(new FormData(f)).toString();
+    fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:data}).then(function(r){
+      if(!r.ok)throw new Error(r.status);
+      sent.hidden=false;sent.textContent='Sent. Thanks, '+name.value.trim().split(' ')[0]+'. Joaquin will get back to you within 48 hours.';
+      f.reset();btn.textContent='Sent';
+    }).catch(function(){
+      sent.hidden=false;sent.textContent='Something went wrong sending the form. Email info@joaquinortizmusic.com directly and we will sort it out.';
+      btn.disabled=false;btn.textContent='Send inquiry';
+    });
   });
 })();
 </script>
